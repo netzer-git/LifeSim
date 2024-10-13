@@ -1,3 +1,4 @@
+using System.ComponentModel.Design;
 using UnityEngine;
 
 public abstract class BaseSkill : MonoBehaviour

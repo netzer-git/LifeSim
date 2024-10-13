@@ -3,10 +3,15 @@ using UnityEngine;
 
 public class MoveTowardMouseSkill : BaseSkill
 {
-	public float moveSpeed = 5f;
+	public float moveSpeed = 0f;
 	public SkillActivationType skillActivationType = SkillActivationType.Update;
 	private Vector2 targetPosition;
 	private bool isMoving = false;
+
+	public void Initialize(float speed)
+	{
+		moveSpeed = speed;
+	}
 
 	private void Update()
 	{
