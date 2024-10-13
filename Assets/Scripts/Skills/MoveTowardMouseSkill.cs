@@ -4,7 +4,7 @@ using UnityEngine;
 public class MoveTowardMouseSkill : BaseSkill
 {
 	public float moveSpeed = 0f;
-	public SkillActivationType skillActivationType = SkillActivationType.Update;
+	public SkillActivationType activationType = SkillActivationType.Update;
 	private Vector2 targetPosition;
 	private bool isMoving = false;
 

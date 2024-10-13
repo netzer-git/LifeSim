@@ -169,6 +169,9 @@ MonoBehaviour:
   agentPrefab: {fileID: 7397071287569498478, guid: 0402fdaf364024c4c890e24d382b6311, type: 3}
   agentCount: 10
   spawnRadius: 10
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
