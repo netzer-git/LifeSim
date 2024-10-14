@@ -6,6 +6,7 @@ public class LookSkill : BaseSkill
 	public float viewRadius = 5f;
 	public LayerMask targetMask;
 	public List<DetectedObject> detectedObjects = new List<DetectedObject>();
+	public SkillActivationType activationType = SkillActivationType.Update;
 
 	public void Initialize(float radius, LayerMask mask)
 	{

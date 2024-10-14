@@ -31,14 +31,28 @@ public class AgentSpawner : MonoBehaviour
 		}
 
 		// Add the MoveTowardMouseSkill component to the agentObject
-		MoveTowardMouseSkill moveSkill = agentObject.AddComponent<MoveTowardMouseSkill>();
-		moveSkill.Initialize(speed);
-		agent.AddSkill(moveSkill);
+		//MoveTowardMouseSkill mouseMoveSkill = agentObject.AddComponent<MoveTowardMouseSkill>();
+		//mouseMoveSkill.Initialize(speed);
+		//agent.AddSkill(mouseMoveSkill);
 
 		// Add the FieldOfViewSkill component to the agentObject and initialize it
 		LookSkill lookSkill = agentObject.AddComponent<LookSkill>();
 		lookSkill.Initialize(3f, targetMask); // Set the view radius and target mask
 		agent.AddSkill(lookSkill);
+
+		// Add the RotateSkill component to the agentObject and initialize it
+		RotationSkill rotateSkill = agentObject.AddComponent<RotationSkill>();
+		rotateSkill.Initialize(1f, 100f); 
+		agent.AddSkill(rotateSkill);
+
+		// Add the MoveSkill component to the agentObject and initialize it
+		MoveSkill moveSkill = agentObject.AddComponent<MoveSkill>();
+		moveSkill.Initialize(1f, 5f);
+		agent.AddSkill(moveSkill);
+
+		// Add the EatSkill component to the agentObject and initialize it
+		EatSkill eatSkill = agentObject.AddComponent<EatSkill>();
+		agent.AddSkill(eatSkill);
 
 		// Add other skills as needed
 		// For example:

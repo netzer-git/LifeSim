@@ -13,4 +13,5 @@ public enum SkillActivationType
 	Update,
 	Start,
 	OnCollide,
+	Active
 }
