@@ -3,14 +3,14 @@ using UnityEngine;
 public class MoveSkill : BaseSkill
 {
 	public float energyCostPerMove = 1f;
-	public float moveForce = 5f;
+	public float moveSpeed = 5f;
 	public SkillActivationType activationType = SkillActivationType.Active;
 
 
-	public void Initialize(float energyCost, float force)
+	public void Initialize(float energyCost, float speed)
 	{
 		energyCostPerMove = energyCost;
-		moveForce = force;
+		moveSpeed = speed;
 	}
 
 	public void MoveForward(float energy)
@@ -19,7 +19,7 @@ public class MoveSkill : BaseSkill
 		{
 			float movement = energy / energyCostPerMove;
 			// Spend energy to move
-			GetComponent<Rigidbody2D>().AddForce(transform.up * moveForce * movement);
+			transform.position += transform.up * moveSpeed * movement * Time.deltaTime;
 		}
 	}
 

@@ -42,7 +42,7 @@ public class AgentSpawner : MonoBehaviour
 
 		// Add the RotateSkill component to the agentObject and initialize it
 		RotationSkill rotateSkill = agentObject.AddComponent<RotationSkill>();
-		rotateSkill.Initialize(1f, 100f); 
+		rotateSkill.Initialize(1f, 50f); 
 		agent.AddSkill(rotateSkill);
 
 		// Add the MoveSkill component to the agentObject and initialize it
