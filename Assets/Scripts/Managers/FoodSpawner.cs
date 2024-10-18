@@ -25,5 +25,11 @@ public class FoodSpawner : MonoBehaviour
         // Assign a unique name to the agent
         foodObject.name = "Food" + (foodId);
         foodId++;
+
+        FoodFeatures foodFeatures = foodObject.GetComponent<FoodFeatures>();
+        if (foodFeatures == null)
+        {
+            foodFeatures = foodObject.AddComponent<FoodFeatures>();
+        }
     }
 }

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LookSkill : BaseSkill
 {
-	public float viewRadius = 5f;
+	public float viewRadius = 2f;
 	public LayerMask targetMask;
 	public List<DetectedObject> detectedObjects = new List<DetectedObject>();
 	public SkillActivationType activationType = SkillActivationType.Update;
@@ -26,11 +26,16 @@ public class LookSkill : BaseSkill
 
 		foreach (var target in targetsInViewRadius)
 		{
+			if (gameObject.name == target.gameObject.name)
+			{
+				continue;
+			}
+
 			Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
 			float angleToTarget = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
 			detectedObjects.Add(new DetectedObject(target.gameObject, angleToTarget));
 			
-			// Debug.Log($"Agent {gameObject.name} detected object: {target.gameObject.name}, Angle: {angleToTarget}");
+			Debug.Log($"Agent {gameObject.name} detected object: {target.gameObject.name}, Angle: {angleToTarget}");
 		}
 	}
 }

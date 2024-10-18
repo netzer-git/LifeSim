@@ -3,7 +3,7 @@ using UnityEngine;
 public class AgentSpawner : MonoBehaviour
 {
 	public GameObject agentPrefab;
-	public int agentCount = 2;
+	public int agentCount = 1;
 	public float spawnRadius = 10f;
 	public LayerMask targetMask;
 
@@ -12,7 +12,7 @@ public class AgentSpawner : MonoBehaviour
 		for (int i = 0; i < agentCount; i++)
 		{
 			Vector2 spawnPosition = Random.insideUnitCircle * spawnRadius;
-			CreateAgent(spawnPosition, i);
+			CreateAgent(spawnPosition, i + 1);
 		}
 	}
 
@@ -28,12 +28,12 @@ public class AgentSpawner : MonoBehaviour
 		if (agent == null)
 		{
 			agent = agentObject.AddComponent<AgentController>();
-		}
+        }
 
 		// Add the MoveTowardMouseSkill component to the agentObject
-		//MoveTowardMouseSkill mouseMoveSkill = agentObject.AddComponent<MoveTowardMouseSkill>();
-		//mouseMoveSkill.Initialize(speed);
-		//agent.AddSkill(mouseMoveSkill);
+		MoveTowardMouseSkill mouseMoveSkill = agentObject.AddComponent<MoveTowardMouseSkill>();
+		mouseMoveSkill.Initialize(speed);
+		agent.AddSkill(mouseMoveSkill);
 
 		// Add the FieldOfViewSkill component to the agentObject and initialize it
 		LookSkill lookSkill = agentObject.AddComponent<LookSkill>();
@@ -41,14 +41,14 @@ public class AgentSpawner : MonoBehaviour
 		agent.AddSkill(lookSkill);
 
 		// Add the RotateSkill component to the agentObject and initialize it
-		RotationSkill rotateSkill = agentObject.AddComponent<RotationSkill>();
-		rotateSkill.Initialize(1f, 50f); 
-		agent.AddSkill(rotateSkill);
+		//RotationSkill rotateSkill = agentObject.AddComponent<RotationSkill>();
+		//rotateSkill.Initialize(1f, 50f); 
+		//agent.AddSkill(rotateSkill);
 
 		// Add the MoveSkill component to the agentObject and initialize it
-		MoveSkill moveSkill = agentObject.AddComponent<MoveSkill>();
-		moveSkill.Initialize(1f, 5f);
-		agent.AddSkill(moveSkill);
+		//MoveSkill moveSkill = agentObject.AddComponent<MoveSkill>();
+		//moveSkill.Initialize(1f, 5f);
+		//agent.AddSkill(moveSkill);
 
 		// Add the EatSkill component to the agentObject and initialize it
 		EatSkill eatSkill = agentObject.AddComponent<EatSkill>();

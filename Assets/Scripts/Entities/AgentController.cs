@@ -7,6 +7,7 @@ using UnityEngine;
 public class AgentController : MonoBehaviour
 {
 	public List<BaseSkill> skills = new List<BaseSkill>();
+	public DitiFeatures ditiFeatures = new DitiFeatures();
 
 	private void Start()
 	{
