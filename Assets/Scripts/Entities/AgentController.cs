@@ -7,7 +7,7 @@ using UnityEngine;
 public class AgentController : MonoBehaviour
 {
 	public List<BaseSkill> skills = new List<BaseSkill>();
-	public DitiFeatures ditiFeatures = new DitiFeatures();
+	public DitiGenome ditiGenome = new DitiGenome();
 
 	private void Start()
 	{
@@ -22,7 +22,13 @@ public class AgentController : MonoBehaviour
 		}
 	}
 
-	public void AddSkill(BaseSkill skill)
+	public Initialize(DitiGenome ditiGenome)
+	{
+		// FIXME: make sure it's not copied (here it's after mutation)
+		this.ditiGenome = ditiGenome;
+	}
+
+    public void AddSkill(BaseSkill skill)
 	{
 		skills.Add(skill);
 		skill.transform.SetParent(transform);

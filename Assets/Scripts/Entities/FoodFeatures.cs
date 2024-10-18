@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class FoodFeatures : MonoBehaviour
 {
-    public int nutrient = 10;
+    public float health = 10;
 }
