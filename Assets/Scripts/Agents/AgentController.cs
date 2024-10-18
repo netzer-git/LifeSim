@@ -4,7 +4,7 @@ using TMPro;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-public class Agent : MonoBehaviour
+public class AgentController : MonoBehaviour
 {
 	public List<BaseSkill> skills = new List<BaseSkill>();
 

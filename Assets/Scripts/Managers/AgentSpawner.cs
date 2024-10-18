@@ -3,7 +3,7 @@ using UnityEngine;
 public class AgentSpawner : MonoBehaviour
 {
 	public GameObject agentPrefab;
-	public int agentCount = 10;
+	public int agentCount = 2;
 	public float spawnRadius = 10f;
 	public LayerMask targetMask;
 
@@ -23,11 +23,11 @@ public class AgentSpawner : MonoBehaviour
 		// Assign a unique name to the agent
 		agentObject.name = "Diti" + (speed + 1);
 
-		// Add the Agent component to the agentObject if it's not already there
-		Agent agent = agentObject.GetComponent<Agent>();
+        // Add the Agent component to the agentObject if it's not already there
+        AgentController agent = agentObject.GetComponent<AgentController>();
 		if (agent == null)
 		{
-			agent = agentObject.AddComponent<Agent>();
+			agent = agentObject.AddComponent<AgentController>();
 		}
 
 		// Add the MoveTowardMouseSkill component to the agentObject
