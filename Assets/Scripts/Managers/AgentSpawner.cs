@@ -21,7 +21,7 @@ public class AgentSpawner : MonoBehaviour
 		GameObject agentObject = Instantiate(agentPrefab, spawnPosition, Quaternion.identity);
 
 		// Assign a unique name to the agent
-		agentObject.name = "Diti" + (speed + 1);
+		agentObject.name = "Diti-" + (speed + 1);
 
         // Add the Agent component to the agentObject if it's not already there
         AgentController agent = agentObject.GetComponent<AgentController>();

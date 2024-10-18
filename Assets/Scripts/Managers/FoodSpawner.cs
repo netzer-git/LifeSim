@@ -23,7 +23,7 @@ public class FoodSpawner : MonoBehaviour
         GameObject foodObject = Instantiate(foodPrefab, spawnPosition, Quaternion.identity);
 
         // Assign a unique name to the agent
-        foodObject.name = "Food" + (foodId);
+        foodObject.name = "Food-" + (foodId);
         foodId++;
 
         FoodFeatures foodFeatures = foodObject.GetComponent<FoodFeatures>();

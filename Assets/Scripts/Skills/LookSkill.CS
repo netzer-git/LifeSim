@@ -35,9 +35,12 @@ public class LookSkill : BaseSkill
 			float angleToTarget = Mathf.Atan2(directionToTarget.y, directionToTarget.x) * Mathf.Rad2Deg;
 			detectedObjects.Add(new DetectedObject(target.gameObject, angleToTarget));
 			
-			Debug.Log($"Agent {gameObject.name} detected object: {target.gameObject.name}, Angle: {angleToTarget}");
+			// Debug.Log($"Agent {gameObject.name} detected object: {target.gameObject.name}, Angle: {angleToTarget}");
 		}
 	}
+
+	// TODO: add log option that shows the radius on the simulation
+	// TODO 2: change for half-circle for front
 }
 
 public class DetectedObject

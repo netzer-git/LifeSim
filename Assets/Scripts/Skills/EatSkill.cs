@@ -4,19 +4,19 @@ public class EatSkill : BaseSkill
 {
 	public SkillActivationType activationType = SkillActivationType.OnCollide;
 
-	private void OnCollisionEnter2D(Collision2D collision)
+	private void OnTriggerEnter2D(Collider2D collider)
 	{
-		if (collision.gameObject.CompareTag("edible"))
+        if (collider.gameObject.CompareTag("Edible"))
 		{
 			// Implement eating logic here
-			Debug.Log($"{gameObject.name} ate {collision.gameObject.name}");
+			Debug.Log($"{gameObject.name} ate {collider.gameObject.name}");
 
-			Destroy(collision.gameObject); // Remove the edible object
+			Destroy(collider.gameObject); // Remove the edible object
 		}
 	}
 
 	public override void Execute()
 	{
-		// This skill does not use Execute since it's based on collision
-	}
+        // This skill does not use Execute since it's based on collider
+    }
 }
