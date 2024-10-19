@@ -29,6 +29,8 @@ public class AgentSpawner : MonoBehaviour
 		{
 			agent = agentObject.AddComponent<AgentController>();
         }
+        DitiGenome ditiGenome = this.generateGenome();
+        agent.Initialize(ditiGenome);
 
 		// Add the MoveTowardMouseSkill component to the agentObject
 		MoveTowardMouseSkill mouseMoveSkill = agentObject.AddComponent<MoveTowardMouseSkill>();
@@ -58,5 +60,30 @@ public class AgentSpawner : MonoBehaviour
 		// For example:
 		// FieldOfViewSkill fieldOfViewSkill = agentObject.AddComponent<FieldOfViewSkill>();
 		// agent.AddSkill(fieldOfViewSkill);
+	}
+
+	private DitiGenome generateGenome()
+	{
+		DitiGenome ditiGenome = new DitiGenome();
+		
+		// ditiGenome.energy
+		ditiGenome.health = 100;
+        // ditiGenome.idleEnergyConsumption
+
+        // ditiGenome.biteStrength
+        // ditiGenome.biteEnergyCost
+        // ditiGenome.nutrientConsumption
+
+        // ditiGenome.moveSpeed
+        // ditiGenome.moveEnergyCost
+
+        // ditiGenome.sightRadius
+
+        // ditiGenome.rotationSpeed
+
+        // ditiGenome.birthEnergyCost
+        // ditiGenome.mutationRate
+
+        return ditiGenome;
 	}
 }
