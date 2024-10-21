@@ -60,6 +60,10 @@ public class AgentSpawner : MonoBehaviour
 		// For example:
 		// FieldOfViewSkill fieldOfViewSkill = agentObject.AddComponent<FieldOfViewSkill>();
 		// agent.AddSkill(fieldOfViewSkill);
+
+		// Add TestSkill
+		TestSkill testSkill = agentObject.AddComponent<TestSkill>();
+		agent.AddSkill(testSkill);
 	}
 
 	private DitiGenome generateGenome()
