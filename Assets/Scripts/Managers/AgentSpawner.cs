@@ -72,22 +72,24 @@ public class AgentSpawner : MonoBehaviour
 		
 		// grassGenome.energy
 		grassGenome.health = 100;
-        // grassGenome.idleEnergyConsumption
+		// grassGenome.idleEnergyConsumption
+		// grassGenome.sleepEnergyGain
 
-        // grassGenome.biteStrength
-        // grassGenome.biteEnergyCost
-        // grassGenome.nutrientConsumption
+		// grassGenome.biteStrength
+		// grassGenome.biteEnergyCost
+		// grassGenome.nutrientConsumption
+		// grassGenome.hungerIncreaseRate
 
-        // grassGenome.moveSpeed
-        // grassGenome.moveEnergyCost
+		// grassGenome.moveSpeed
+		// grassGenome.moveEnergyCost
 
-        // grassGenome.sightRadius
+		// grassGenome.sightRadius
 
-        // grassGenome.rotationSpeed
+		// grassGenome.rotationSpeed
 
-        // grassGenome.birthEnergyCost
-        // grassGenome.mutationRate
+		// grassGenome.birthEnergyCost
+		// grassGenome.mutationRate
 
-        return grassGenome;
+		return grassGenome;
 	}
 }

@@ -7,11 +7,12 @@ using UnityEngine;
 public class AgentController : MonoBehaviour
 {
 	public List<BaseSkill> skills = new List<BaseSkill>();
-	public GrassGenome grassGenome; // genome
-    public float currentHealth;
+	public GrassGenome genome; // genome - specific for grass agent
+	public float currentHealth;
     public float currentEnergy;
+	public float currentHunger = 0f;
 
-    private void Start()
+	private void Start()
 	{
 		skills.AddRange(GetComponents<BaseSkill>());
 	}
@@ -24,15 +25,17 @@ public class AgentController : MonoBehaviour
 			ExecuteSkills();
 		}
 
-		// TODO: add energy and health reduction
+		// Energy decreases and hunger increase.
+		currentHunger += genome.hungerIncreaseRate * Time.deltaTime;
+		currentEnergy -= genome.idleEnergyConsumption * Time.deltaTime;
 	}
 
 	public void Initialize(GrassGenome grassGenome)
 	{
 		// FIXME: make sure it's not copied (here it's after mutation)
-		this.grassGenome = grassGenome;
-		this.currentHealth = this.grassGenome.health;
-		this.currentEnergy = this.grassGenome.energy;
+		this.genome = grassGenome;
+		this.currentHealth = this.genome.health;
+		this.currentEnergy = this.genome.energy;
 	}
 
     public void AddSkill(BaseSkill skill)
@@ -54,26 +57,4 @@ public class AgentController : MonoBehaviour
 			skill.Execute();
 		}
 	}
-}
-
-public struct GrassGenome
-{
-	// health and energy
-    public float energy; // start and max amount of energy, replenish on eating. everything costs energy
-    public float health; // start and max amount of health, replenish on long rests
-	public float idleEnergyConsumption; // energy consumed when idle
-    // eat
-    public float biteStrength; // amount of food for each bite
-    public float biteEnergyCost; // energy cost for each bite
-    public float nutrientConsumption; // amount of food that turns into energy
-    // move
-    public float moveSpeed; // movement speed
-    public float moveEnergyCost; // energy cost for a move
-    // look
-    public float sightRadius; // field of view depth
-    // rotate
-    public float rotationSpeed; // rotation speed
-    // birth
-    public float birthEnergyCost; // cost in energy for birth
-    public float mutationRate; // mutation rate
 }
