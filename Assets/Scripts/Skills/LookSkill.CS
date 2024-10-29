@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
-using UnityEngine.Rendering.VirtualTexturing;
 
 public class LookSkill : BaseSkill
 {
 	public float viewRadius = 2f;
-	public float viewAngle = 90f; // Half-circle field of view
+	public float viewAngle = 90f; // Field of view angle
 	public LayerMask targetMask;
 	public List<DetectedObject> detectedObjects = new List<DetectedObject>();
-	public SkillActivationType activationType = SkillActivationType.Update;
+
 	public void Initialize(float radius, LayerMask mask)
 	{
 		viewRadius = radius;
 		targetMask = mask;
 	}
+
 	private void Update()
 	{
 		Execute();
@@ -24,45 +22,48 @@ public class LookSkill : BaseSkill
 	public override void Execute()
 	{
 		detectedObjects.Clear();
+
 		Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, viewRadius, targetMask);
 
 		foreach (var target in targetsInViewRadius)
 		{
-			if (gameObject.name == target.gameObject.name)
+			if (gameObject == target.gameObject)
 			{
-				continue;
+				continue; // Skip self
 			}
 
 			Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
-			// Calculate the angle using the agent's forward direction
-			float angleToTarget = Vector2.Angle(transform.right, directionToTarget);
+			float angleToTarget = Vector2.SignedAngle(transform.up, directionToTarget);
 
-			// Check if the target is within the field of view angle
 			if (angleToTarget >= -viewAngle / 2 && angleToTarget <= viewAngle / 2)
 			{
 				detectedObjects.Add(new DetectedObject(target.gameObject, angleToTarget));
 			}
+
 		}
 	}
-
 	private void OnDrawGizmos()
 	{
+		// Draw view radius
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireSphere(transform.position, viewRadius);
 
-		Vector3 viewAngleA = DirFromAngle(-viewAngle / 2);
-		Vector3 viewAngleB = DirFromAngle(viewAngle / 2);
+		// Draw field of view lines using Quaternion rotations
+		Vector3 leftBoundary = Quaternion.Euler(0, 0, -viewAngle / 2) * transform.up;
+		Vector3 rightBoundary = Quaternion.Euler(0, 0, viewAngle / 2) * transform.up;
 
 		Gizmos.color = Color.blue;
-		Gizmos.DrawLine(transform.position, transform.position + viewAngleA * viewRadius);
-		Gizmos.DrawLine(transform.position, transform.position + viewAngleB * viewRadius);
+		Gizmos.DrawLine(transform.position, transform.position + leftBoundary * viewRadius);
+		Gizmos.DrawLine(transform.position, transform.position + rightBoundary * viewRadius);
+
+		// Optionally draw lines to detected objects
+		Gizmos.color = Color.red;
+		foreach (var detected in detectedObjects)
+		{
+			Gizmos.DrawLine(transform.position, detected.Object.transform.position);
+		}
 	}
 
-	private Vector3 DirFromAngle(float angleInDegrees)
-	{
-		angleInDegrees += transform.eulerAngles.z;
-		return new Vector3(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad), 0);
-	}
 }
 
 public class DetectedObject

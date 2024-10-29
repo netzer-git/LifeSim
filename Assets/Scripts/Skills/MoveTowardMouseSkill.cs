@@ -38,8 +38,8 @@ public class MoveTowardMouseSkill : BaseSkill
 
 			if (moveDirection != Vector2.zero)
 			{
-				float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
-				transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
+				float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg - 90f;
+				transform.rotation = Quaternion.Euler(0, 0, angle);
 			}
 		}
 	}

@@ -12,12 +12,12 @@ public class RotationSkill : BaseSkill
 
 	public void Rotate(float direction)
 	{
-		// Spend energy to rotate
-		transform.Rotate(Vector3.forward, direction * rotationSpeed * Time.deltaTime);
+		// Rotate around Z-axis (Vector3.forward) in the correct direction
+		transform.Rotate(0, 0, -direction * rotationSpeed * Time.deltaTime);
 	}
 
 	public override void Execute()
 	{
-		Rotate(1f);
+		Rotate(1f); // Positive value rotates the agent clockwise
 	}
 }
