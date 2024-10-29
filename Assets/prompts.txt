@@ -1,0 +1,13 @@
+## 1 intorduction prompt
+
+Hi there,
+I'm working on a Unity project I'm calling LifeSim.
+In the project I'm trying to create some sort on environment simulator for different creatures.
+For this, I started creating bottom-up style of modular system I call Skill system, which allows my entities (agents, animals) to have different sets of skills such as sight, giving birth, eating and more.
+I created a basic scene (the whole simulation is from birds eye view) to test the different skills using user input.
+Additionally, I create basic gene system that affects the new entities skills, so an animal with strong eyes gene (for example, names are dynamic) will have a better FIeldOfView Skill.
+
+I need your help implementing the next step of my project - the animal's mind. As this project is not strictly about evolution,
+I want the animals to have basic needs and desires and I don't want them to go around in the dark until they accidentally find what is food.
+But I do want them to have the option to develop their brain, finding new ways to live.
+What do you think could be a good way to implement that in unity? I want to end up with a mind where the skills inputs are getting in, and some small sort of commands are getting out (move, sleep, mate, eat)

@@ -7,7 +7,7 @@ using UnityEngine;
 public class AgentController : MonoBehaviour
 {
 	public List<BaseSkill> skills = new List<BaseSkill>();
-	public DitiGenome ditiGenome; // genome
+	public GrassGenome grassGenome; // genome
     public float currentHealth;
     public float currentEnergy;
 
@@ -27,12 +27,12 @@ public class AgentController : MonoBehaviour
 		// TODO: add energy and health reduction
 	}
 
-	public void Initialize(DitiGenome ditiGenome)
+	public void Initialize(GrassGenome grassGenome)
 	{
 		// FIXME: make sure it's not copied (here it's after mutation)
-		this.ditiGenome = ditiGenome;
-		this.currentHealth = this.ditiGenome.health;
-		this.currentEnergy = this.ditiGenome.energy;
+		this.grassGenome = grassGenome;
+		this.currentHealth = this.grassGenome.health;
+		this.currentEnergy = this.grassGenome.energy;
 	}
 
     public void AddSkill(BaseSkill skill)
@@ -56,7 +56,7 @@ public class AgentController : MonoBehaviour
 	}
 }
 
-public struct DitiGenome
+public struct GrassGenome
 {
 	// health and energy
     public float energy; // start and max amount of energy, replenish on eating. everything costs energy

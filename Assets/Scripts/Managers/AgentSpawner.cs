@@ -21,7 +21,7 @@ public class AgentSpawner : MonoBehaviour
 		GameObject agentObject = Instantiate(agentPrefab, spawnPosition, Quaternion.identity);
 
 		// Assign a unique name to the agent
-		agentObject.name = "Diti-" + (speed + 1);
+		agentObject.name = "Grass-" + (speed + 1);
 
         // Add the Agent component to the agentObject if it's not already there
         AgentController agent = agentObject.GetComponent<AgentController>();
@@ -29,8 +29,8 @@ public class AgentSpawner : MonoBehaviour
 		{
 			agent = agentObject.AddComponent<AgentController>();
         }
-        DitiGenome ditiGenome = this.generateGenome();
-        agent.Initialize(ditiGenome);
+        GrassGenome grassGenome = this.generateGenome();
+        agent.Initialize(grassGenome);
 
 		// Add the MoveTowardMouseSkill component to the agentObject
 		MoveTowardMouseSkill mouseMoveSkill = agentObject.AddComponent<MoveTowardMouseSkill>();
@@ -66,28 +66,28 @@ public class AgentSpawner : MonoBehaviour
 		agent.AddSkill(testSkill);
 	}
 
-	private DitiGenome generateGenome()
+	private GrassGenome generateGenome()
 	{
-		DitiGenome ditiGenome = new DitiGenome();
+		GrassGenome grassGenome = new GrassGenome();
 		
-		// ditiGenome.energy
-		ditiGenome.health = 100;
-        // ditiGenome.idleEnergyConsumption
+		// grassGenome.energy
+		grassGenome.health = 100;
+        // grassGenome.idleEnergyConsumption
 
-        // ditiGenome.biteStrength
-        // ditiGenome.biteEnergyCost
-        // ditiGenome.nutrientConsumption
+        // grassGenome.biteStrength
+        // grassGenome.biteEnergyCost
+        // grassGenome.nutrientConsumption
 
-        // ditiGenome.moveSpeed
-        // ditiGenome.moveEnergyCost
+        // grassGenome.moveSpeed
+        // grassGenome.moveEnergyCost
 
-        // ditiGenome.sightRadius
+        // grassGenome.sightRadius
 
-        // ditiGenome.rotationSpeed
+        // grassGenome.rotationSpeed
 
-        // ditiGenome.birthEnergyCost
-        // ditiGenome.mutationRate
+        // grassGenome.birthEnergyCost
+        // grassGenome.mutationRate
 
-        return ditiGenome;
+        return grassGenome;
 	}
 }

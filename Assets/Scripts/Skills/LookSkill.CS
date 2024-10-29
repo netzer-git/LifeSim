@@ -34,7 +34,7 @@ public class LookSkill : BaseSkill
 			}
 
 			Vector2 directionToTarget = (target.transform.position - transform.position).normalized;
-			// Calculate the angle using the Diti's forward direction
+			// Calculate the angle using the agent's forward direction
 			float angleToTarget = Vector2.Angle(transform.right, directionToTarget);
 
 			// Check if the target is within the field of view angle
