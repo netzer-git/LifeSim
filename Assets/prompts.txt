@@ -11,3 +11,10 @@ I need your help implementing the next step of my project - the animal's mind. A
 I want the animals to have basic needs and desires and I don't want them to go around in the dark until they accidentally find what is food.
 But I do want them to have the option to develop their brain, finding new ways to live.
 What do you think could be a good way to implement that in unity? I want to end up with a mind where the skills inputs are getting in, and some small sort of commands are getting out (move, sleep, mate, eat)
+
+## Let's start prompt
+I like the idea of utility-based AI with RL.
+I feel like there is a potential to combine this two into an approach where the agent decide its next goal/task using utility based AI, and maybe we can rank the outcome of his decision and use it to reinforce the agents actions.
+Let's try and start with simple needs and perceptions.
+Say we have FieldOfView skill which returns list of viewed objects and direction to them, we have Hunger and Sleep as needs and we have only the option to move as an active action the agent can do (eat will happen when the agent collide with food).
+Let's go step by step on architecture and implementation in untiy using the approaches above.

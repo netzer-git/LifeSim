@@ -56,6 +56,10 @@ public class AgentSpawner : MonoBehaviour
 		EatSkill eatSkill = agentObject.AddComponent<EatSkill>();
 		agent.AddSkill(eatSkill);
 
+		// Add the SleepSkill component to the agentObject and initialize it
+		SleepSkill sleepSkill = agentObject.AddComponent<SleepSkill>();
+		agent.AddSkill(sleepSkill);
+
 		// Add other skills as needed
 		// For example:
 		// FieldOfViewSkill fieldOfViewSkill = agentObject.AddComponent<FieldOfViewSkill>();
