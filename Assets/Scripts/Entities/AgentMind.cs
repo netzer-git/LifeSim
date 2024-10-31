@@ -6,9 +6,10 @@ public class AgentMind : MonoBehaviour
 {
 	// RL Components
 	private Dictionary<AgentStateActionPair, float> qTable = new Dictionary<AgentStateActionPair, float>();
+	private List<BaseAction> availableActions = new List<BaseAction>();
 	private float reward;
 	public AgentState currentState;
-	public AgentAction currentAction;
+	public BaseAction currentAction;
 
 	// Learning parameters
 	public float learningRate = 0.1f;
@@ -17,10 +18,18 @@ public class AgentMind : MonoBehaviour
 
 	private void Start()
 	{
+		// Collect and Initialize available actions
+		availableActions.AddRange(GetComponents<BaseAction>());
+		foreach (var action in availableActions)
+		{
+			action.Initialize();
+		}
+
 		AgentController agentController = GetComponent<AgentController>();
 		currentState = GetCurrentState(agentController);
 		currentAction = SelectAction(currentState);
 	}
+
 
 	void OnDrawGizmos()
 	{
@@ -34,13 +43,20 @@ public class AgentMind : MonoBehaviour
 		// Observe the current state
 		AgentState newState = GetCurrentState(agentController);
 		// Receive reward from the last action
-		reward = GetReward(currentState, currentAction, newState);
+		reward = GetReward(currentState, newState);
 		// Update Q-value
 		UpdateQValue(currentState, currentAction, reward, newState);
 		// Decide next action
 		currentState = newState;
 		currentAction = SelectAction(currentState);
+
+		// Execute the action
+		if (currentAction != null)
+		{
+			currentAction.Execute();
+		}
 	}
+
 
 	public AgentState GetCurrentState(AgentController agentController)
 	{
@@ -81,21 +97,31 @@ public class AgentMind : MonoBehaviour
 		return state;
 	}
 
-	public AgentAction SelectAction(AgentState state)
+	public BaseAction SelectAction(AgentState state)
 	{
-		List<AgentAction> actions = GetAvailableActions(state);
-		// Epsilon-greedy strategy for exploration
+		List<BaseAction> executableActions = new List<BaseAction>();
+
+		// Filter actions that can be executed in the current state
+		foreach (var action in availableActions)
+		{
+			if (action.CanExecute(state))
+			{
+				executableActions.Add(action);
+			}
+		}
+
+		// Epsilon-greedy strategy remains the same
 		if (Random.value < explorationRate)
 		{
 			// Random action (exploration)
-			return actions[Random.Range(0, actions.Count)];
+			return executableActions[Random.Range(0, executableActions.Count)];
 		}
 		else
 		{
 			// Best action based on Q-values (exploitation)
-			AgentAction bestAction = actions[0];
+			BaseAction bestAction = executableActions[0];
 			float maxQ = float.MinValue;
-			foreach (AgentAction action in actions)
+			foreach (var action in executableActions)
 			{
 				AgentStateActionPair key = new AgentStateActionPair { state = state, action = action };
 				float q = qTable.ContainsKey(key) ? qTable[key] : 0f;
@@ -111,8 +137,7 @@ public class AgentMind : MonoBehaviour
 		}
 	}
 
-
-	private float GetReward(AgentState previousState, AgentAction action, AgentState newState)
+	private float GetReward(AgentState previousState, AgentState newState)
 	{
 		// FIXME: reward multipliers are arbitrary and given from o1
 		float reward = 0f;
@@ -140,7 +165,7 @@ public class AgentMind : MonoBehaviour
 		return reward;
 	}
 
-	private void UpdateQValue(AgentState state, AgentAction action, float reward, AgentState newState)
+	private void UpdateQValue(AgentState state, BaseAction action, float reward, AgentState newState)
 	{
 		AgentStateActionPair key = new AgentStateActionPair { state = state, action = action };
 		// Get the current Q-value
@@ -157,7 +182,7 @@ public class AgentMind : MonoBehaviour
 	{
 		float maxQ = float.MinValue;
 
-		foreach (AgentAction action in GetAvailableActions(state))
+		foreach (BaseAction action in availableActions)
 		{
 			AgentStateActionPair key = new AgentStateActionPair { state = state, action = action };
 			float q = qTable.ContainsKey(key) ? qTable[key] : 0f;
@@ -166,35 +191,5 @@ public class AgentMind : MonoBehaviour
 		}
 
 		return maxQ == float.MinValue ? 0f : maxQ;
-	}
-
-	private List<AgentAction> GetAvailableActions(AgentState state)
-	{
-		List<AgentAction> actions = new List<AgentAction>();
-
-		// The agent can always wander
-		actions.Add(AgentAction.Wander);
-		// actions.Add(AgentAction.SeekMate);
-		actions.Add(AgentAction.SeekShelter);
-
-		// If hungry, seeking food is an option
-		if (state.hungerLevel != HungerLevel.Low)
-		{
-			actions.Add(AgentAction.SeekFood);
-		}
-
-		// If energy is low, sleeping is an option
-		if (state.energyLevel != EnergyLevel.High)
-		{
-			actions.Add(AgentAction.Sleep);
-		}
-
-		// If predator is nearby, fleeing is an option
-		if (state.detectedObjectsTypes.Contains(DetectedObjectType.Predator))
-		{
-			actions.Add(AgentAction.Flee);
-		}
-
-		return actions;
 	}
 }

@@ -35,7 +35,10 @@ public class AgentController : MonoBehaviour
 		currentEnergy -= genome.idleEnergyConsumption * Time.deltaTime;
 
 		// Execute the action
-		ExecuteAction(agentMind.currentAction);
+		if (agentMind.currentAction.CanExecute(agentMind.currentState))
+		{
+			agentMind.currentAction.Execute();
+		}
 	}
 
 	public void Initialize(GrassGenome grassGenome)
@@ -55,47 +58,6 @@ public class AgentController : MonoBehaviour
 
 			// Wait for a fixed interval
 			yield return new WaitForSeconds(this.decisionMakingCoroutineInterval);
-		}
-	}
-
-	private void ExecuteAction(AgentAction action)
-	{
-		MoveSkill moveSkill = GetComponent<MoveSkill>();
-		switch (action)
-		{
-			case AgentAction.Wander:
-				moveSkill.Wander();
-				break;
-			case AgentAction.SeekFood:
-				// Move towards the nearest food
-				Vector3? foodPosition = FindNearestObjectPosition("Food");
-				if (foodPosition.HasValue)
-				{
-					moveSkill.MoveTowards(foodPosition.Value);
-				}
-				else
-				{
-					moveSkill.Wander();
-				}
-				break;
-			case AgentAction.Flee:
-				// Move away from the nearest predator
-				Vector3? predatorPosition = FindNearestObjectPosition("Predator");
-				if (predatorPosition.HasValue)
-				{
-					Vector3 directionAway = transform.position - predatorPosition.Value;
-					Vector3 fleePosition = transform.position + directionAway.normalized * 2f;
-					moveSkill.MoveTowards(fleePosition);
-				}
-				else
-				{
-					moveSkill.Wander();
-				}
-				break;
-			case AgentAction.Sleep:
-				StartCoroutine(SleepRoutine());
-				break;
-				// Add other actions
 		}
 	}
 

@@ -4,20 +4,10 @@ public enum HungerLevel { Low, Medium, High }
 public enum EnergyLevel { High, Medium, Low }
 public enum DetectedObjectType { Food, Predator, Mate, None }
 
-public enum AgentAction
-{
-	Wander,
-	Flee,
-	SeekFood,
-	SeekMate,
-	SeekShelter,
-	Sleep
-}
-
 public class AgentStateActionPair
 {
 	public AgentState state;
-	public AgentAction action;
+	public BaseAction action;
 
 	public override bool Equals(object obj)
 	{
@@ -25,14 +15,14 @@ public class AgentStateActionPair
 			return false;
 
 		AgentStateActionPair other = (AgentStateActionPair)obj;
-		return state.Equals(other.state) && action == other.action;
+		return state.Equals(other.state) && action.ActionName == other.action.ActionName;
 	}
 
 	public override int GetHashCode()
 	{
 		int hash = 17;
 		hash = hash * 31 + state.GetHashCode();
-		hash = hash * 31 + action.GetHashCode();
+		hash = hash * 31 + action.ActionName.GetHashCode();
 		return hash;
 	}
 }
