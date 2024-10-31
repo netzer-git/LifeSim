@@ -9,12 +9,19 @@ public class AgentController : MonoBehaviour
 	public List<BaseSkill> skills = new List<BaseSkill>();
 	public GrassGenome genome; // genome - specific for grass agent
 	public float currentHealth;
-    public float currentEnergy;
-	public float currentHunger = 0f;
+    public float currentEnergy; // 0 -> 100
+	public float currentHunger = 0f; // 0 -> 1
+
+	private AgentMind agentMind;
+	private float decisionMakingCoroutineInterval = 1f;
 
 	private void Start()
 	{
 		skills.AddRange(GetComponents<BaseSkill>());
+		agentMind = GetComponent<AgentMind>();
+		currentState = agentMind.GetCurrentState();
+		currentAction = agentMind.SelectAction(currentState);
+		StartCoroutine(DecisionMakingCoroutine());
 	}
 
 	private void Update()
@@ -28,17 +35,84 @@ public class AgentController : MonoBehaviour
 		// Energy decreases and hunger increase.
 		currentHunger += genome.hungerIncreaseRate * Time.deltaTime;
 		currentEnergy -= genome.idleEnergyConsumption * Time.deltaTime;
+
+		// Execute the action
+		ExecuteAction(currentAction);
 	}
 
 	public void Initialize(GrassGenome grassGenome)
 	{
 		// FIXME: make sure it's not copied (here it's after mutation)
-		this.genome = grassGenome;
-		this.currentHealth = this.genome.health;
-		this.currentEnergy = this.genome.energy;
+		genome = grassGenome;
+		currentHealth = this.genome.health;
+		currentEnergy = this.genome.energy;
 	}
 
-    public void AddSkill(BaseSkill skill)
+	private IEnumerator DecisionMakingCoroutine()
+	{
+		while (true)
+		{
+			// Decision-making logic
+			DecideAction();
+
+			// Wait for a fixed interval
+			yield return new WaitForSeconds(this.decisionMakingCoroutineInterval);
+		}
+	}
+
+	private void ExecuteAction(AgentAction action)
+	{
+		MoveSkill moveSkill = GetComponent<MoveSkill>();
+		switch (action)
+		{
+			case AgentAction.Wander:
+				moveSkill.Wander();
+				break;
+			case AgentAction.SeekFood:
+				// Move towards the nearest food
+				Vector3? foodPosition = FindNearestObjectPosition("Food");
+				if (foodPosition.HasValue)
+				{
+					moveSkill.MoveTowards(foodPosition.Value);
+				}
+				else
+				{
+					moveSkill.Wander();
+				}
+				break;
+			case AgentAction.Flee:
+				// Move away from the nearest predator
+				Vector3? predatorPosition = FindNearestObjectPosition("Predator");
+				if (predatorPosition.HasValue)
+				{
+					Vector3 directionAway = transform.position - predatorPosition.Value;
+					Vector3 fleePosition = transform.position + directionAway.normalized * 2f;
+					moveSkill.MoveTowards(fleePosition);
+				}
+				else
+				{
+					moveSkill.Wander();
+				}
+				break;
+			case AgentAction.Sleep:
+				StartCoroutine(SleepRoutine());
+				break;
+				// Add other actions
+		}
+	}
+
+	private IEnumerator SleepRoutine()
+	{
+		// Implement sleeping behavior
+		// For simplicity, we'll just wait and regain energy
+		float sleepDuration = 5f; // Adjust as needed
+		yield return new WaitForSeconds(sleepDuration);
+
+		// Regain energy
+		currentEnergy = genome.energy; // Restore to max energy
+	}
+
+	public void AddSkill(BaseSkill skill)
 	{
 		skills.Add(skill);
 		skill.transform.SetParent(transform);

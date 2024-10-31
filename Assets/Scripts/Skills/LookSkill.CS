@@ -16,6 +16,7 @@ public class LookSkill : BaseSkill
 
 	private void Update()
 	{
+		// TODO: Execute by coroutine?
 		Execute();
 	}
 
