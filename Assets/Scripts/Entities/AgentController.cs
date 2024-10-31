@@ -19,8 +19,6 @@ public class AgentController : MonoBehaviour
 	{
 		skills.AddRange(GetComponents<BaseSkill>());
 		agentMind = GetComponent<AgentMind>();
-		currentState = agentMind.GetCurrentState();
-		currentAction = agentMind.SelectAction(currentState);
 		StartCoroutine(DecisionMakingCoroutine());
 	}
 
@@ -37,7 +35,7 @@ public class AgentController : MonoBehaviour
 		currentEnergy -= genome.idleEnergyConsumption * Time.deltaTime;
 
 		// Execute the action
-		ExecuteAction(currentAction);
+		ExecuteAction(agentMind.currentAction);
 	}
 
 	public void Initialize(GrassGenome grassGenome)
@@ -53,7 +51,7 @@ public class AgentController : MonoBehaviour
 		while (true)
 		{
 			// Decision-making logic
-			DecideAction();
+			agentMind.DecideAction(this);
 
 			// Wait for a fixed interval
 			yield return new WaitForSeconds(this.decisionMakingCoroutineInterval);

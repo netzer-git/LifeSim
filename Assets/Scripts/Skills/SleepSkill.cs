@@ -5,8 +5,6 @@ public class SleepSkill : BaseSkill
 {
     public SkillActivationType activationType = SkillActivationType.Active;
 	
-	// public void Initialize(args);
-
 	public override void Execute()
 	{
 		AgentController agent = this.GetComponent<AgentController>();

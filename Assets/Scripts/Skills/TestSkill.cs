@@ -19,7 +19,7 @@ public class TestSkill : BaseSkill
 	public override void Execute()
 	{
 		float absoluteAngle = RelativeToAbsoluteAngle(-45f);
-		Debug.Log("Executing TestSkill at angle: " + absoluteAngle);
+		//Debug.Log("Executing TestSkill at angle: " + absoluteAngle);
 	}
 
 	public float RelativeToAbsoluteAngle(float relativeAngle)

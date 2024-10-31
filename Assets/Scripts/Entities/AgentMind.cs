@@ -7,13 +7,20 @@ public class AgentMind : MonoBehaviour
 	// RL Components
 	private Dictionary<AgentStateActionPair, float> qTable = new Dictionary<AgentStateActionPair, float>();
 	private float reward;
-	private AgentState currentState;
-	private AgentAction currentAction;
+	public AgentState currentState;
+	public AgentAction currentAction;
 
 	// Learning parameters
 	public float learningRate = 0.1f;
 	public float discountFactor = 0.9f; // value close to 1 encourages long-term rewards.
 	public float explorationRate = 0.2f; // For epsilon-greedy exploration
+
+	private void Start()
+	{
+		AgentController agentController = GetComponent<AgentController>();
+		currentState = GetCurrentState(agentController);
+		currentAction = SelectAction(currentState);
+	}
 
 	void OnDrawGizmos()
 	{
@@ -22,9 +29,8 @@ public class AgentMind : MonoBehaviour
 		Handles.Label(labelPosition, $"Action: {currentAction}");
 	}
 
-	public void DecideAction()
+	public void DecideAction(AgentController agentController)
 	{
-		AgentController agentController = GetComponent<AgentController>();
 		// Observe the current state
 		AgentState newState = GetCurrentState(agentController);
 		// Receive reward from the last action
