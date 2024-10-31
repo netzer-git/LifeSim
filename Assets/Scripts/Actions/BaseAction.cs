@@ -10,6 +10,7 @@ public abstract class BaseAction : MonoBehaviour
 	public virtual void Initialize()
 	{
 		// Common initialization code
+		return;
 	}
 
 	// check for both current state excecutaion and gene abilities
@@ -20,5 +21,6 @@ public abstract class BaseAction : MonoBehaviour
 	public virtual void Finish()
 	{
 		// Common cleanup code
+		return;
 	}
 }

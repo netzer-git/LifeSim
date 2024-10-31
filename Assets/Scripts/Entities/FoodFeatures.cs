@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FoodFeatures : MonoBehaviour
 {
-    public float health = 0.1f;
+    public float health = 10f;
 
 	public void Initialize(float health)
 	{

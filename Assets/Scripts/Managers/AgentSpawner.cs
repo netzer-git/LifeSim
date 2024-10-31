@@ -39,7 +39,7 @@ public class AgentSpawner : MonoBehaviour
 
 		// Add the FieldOfViewSkill component to the agentObject and initialize it
 		LookSkill lookSkill = agentObject.AddComponent<LookSkill>();
-		lookSkill.Initialize(3f, targetMask); // Set the view radius and target mask
+		lookSkill.Initialize(agent, targetMask); // Set the view radius and target mask
 		agent.AddSkill(lookSkill);
 
 		// Add the RotateSkill component to the agentObject and initialize it
@@ -52,14 +52,6 @@ public class AgentSpawner : MonoBehaviour
 		//moveSkill.Initialize(1f, 5f);
 		//agent.AddSkill(moveSkill);
 
-		// Add the EatSkill component to the agentObject and initialize it
-		EatSkill eatSkill = agentObject.AddComponent<EatSkill>();
-		agent.AddSkill(eatSkill);
-
-		// Add the SleepSkill component to the agentObject and initialize it
-		SleepSkill sleepSkill = agentObject.AddComponent<SleepSkill>();
-		agent.AddSkill(sleepSkill);
-
 		// Add other skills as needed
 		// For example:
 		// FieldOfViewSkill fieldOfViewSkill = agentObject.AddComponent<FieldOfViewSkill>();
@@ -68,14 +60,19 @@ public class AgentSpawner : MonoBehaviour
 		// Add TestSkill
 		TestSkill testSkill = agentObject.AddComponent<TestSkill>();
 		agent.AddSkill(testSkill);
+		
+		// Add different actions
+		IdleAction idleAction = agentObject.AddComponent<IdleAction>();
 	}
 
 	private GrassGenome generateGenome()
 	{
 		GrassGenome grassGenome = new GrassGenome();
-		
-		// grassGenome.energy
-		grassGenome.health = 100;
+
+		// grassGenome.explorationRate
+
+		grassGenome.energy = 100;
+		grassGenome.health = 50;
 		// grassGenome.idleEnergyConsumption
 		// grassGenome.sleepEnergyGain
 
@@ -87,7 +84,7 @@ public class AgentSpawner : MonoBehaviour
 		// grassGenome.moveSpeed
 		// grassGenome.moveEnergyCost
 
-		// grassGenome.sightRadius
+		 grassGenome.sightRadius = 2f;
 
 		// grassGenome.rotationSpeed
 

@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class LookSkill : BaseSkill
 {
-	public float viewRadius = 2f;
+	public float sightRadius = 2f;
 	public float viewAngle = 90f; // Field of view angle
 	public LayerMask targetMask;
 	public List<DetectedObject> detectedObjects = new List<DetectedObject>();
 
-	public void Initialize(float radius, LayerMask mask)
+	public void Initialize(AgentController agent, LayerMask mask)
 	{
-		viewRadius = radius;
+		sightRadius = agent.genome.sightRadius;
 		targetMask = mask;
 	}
 
@@ -24,7 +24,7 @@ public class LookSkill : BaseSkill
 	{
 		detectedObjects.Clear();
 
-		Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, viewRadius, targetMask);
+		Collider2D[] targetsInViewRadius = Physics2D.OverlapCircleAll(transform.position, sightRadius, targetMask);
 
 		foreach (var target in targetsInViewRadius)
 		{
@@ -47,15 +47,15 @@ public class LookSkill : BaseSkill
 	{
 		// Draw view radius
 		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireSphere(transform.position, viewRadius);
+		Gizmos.DrawWireSphere(transform.position, sightRadius);
 
 		// Draw field of view lines using Quaternion rotations
 		Vector3 leftBoundary = Quaternion.Euler(0, 0, -viewAngle / 2) * transform.up;
 		Vector3 rightBoundary = Quaternion.Euler(0, 0, viewAngle / 2) * transform.up;
 
 		Gizmos.color = Color.blue;
-		Gizmos.DrawLine(transform.position, transform.position + leftBoundary * viewRadius);
-		Gizmos.DrawLine(transform.position, transform.position + rightBoundary * viewRadius);
+		Gizmos.DrawLine(transform.position, transform.position + leftBoundary * sightRadius);
+		Gizmos.DrawLine(transform.position, transform.position + rightBoundary * sightRadius);
 
 		// Optionally draw lines to detected objects
 		Gizmos.color = Color.red;

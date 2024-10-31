@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EatAction : BaseAction
+public class IdleAction : BaseAction
 {
 	private AgentController agentController;
 
@@ -17,9 +17,6 @@ public class EatAction : BaseAction
 
 	public override void Execute()
 	{
-		// Implement the logic for eating
-		// For example, reduce hunger and consume food
-		agentController.currentHunger = 0f;
-		// Assume food object is handled elsewhere
+		return;
 	}
 }

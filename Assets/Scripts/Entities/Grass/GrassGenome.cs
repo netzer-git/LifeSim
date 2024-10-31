@@ -1,5 +1,7 @@
 public struct GrassGenome
 {
+	// learning
+	public float explorationRate; // exploration rate
 	// health and energy
 	public float energy; // start and max amount of energy, replenish on eating. everything costs energy
 	public float health; // start and max amount of health, replenish on long rests

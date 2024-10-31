@@ -12,9 +12,21 @@ I want the animals to have basic needs and desires and I don't want them to go a
 But I do want them to have the option to develop their brain, finding new ways to live.
 What do you think could be a good way to implement that in unity? I want to end up with a mind where the skills inputs are getting in, and some small sort of commands are getting out (move, sleep, mate, eat)
 
-## Let's start prompt
+## 2 Let's start prompt
 I like the idea of utility-based AI with RL.
 I feel like there is a potential to combine this two into an approach where the agent decide its next goal/task using utility based AI, and maybe we can rank the outcome of his decision and use it to reinforce the agents actions.
 Let's try and start with simple needs and perceptions.
 Say we have FieldOfView skill which returns list of viewed objects and direction to them, we have Hunger and Sleep as needs and we have only the option to move as an active action the agent can do (eat will happen when the agent collide with food).
 Let's go step by step on architecture and implementation in untiy using the approaches above.
+
+## 3 MoveTowards prompt
+Let's talk about one of the most basic skills I want an agent to have - MoveTowards target
+I'm in sort of an impass here, on one hand I hoped that an easy "go to the direction of something" would be the best way of
+implementing it, but now I'm starting to understand that it might be a bit complicated for that,
+and we might need to use a pathfinding mechanic here.
+But why exactly? aren't seeing an object means to can reach it? well currently yes,
+but in the future, I might add the skill to detect object beyond blockers (like smell).
+And additionally, when my world will become more complex, there might be cases where taking a way to something might lead you into
+traps or some dead-end that the agent might don't want to take - taking into account pathfinding algorithm.
+I want to hear your thoughts on that, I don't want to use any shortest-pass algorithm,
+but maybe create something more complex that will take into account options that shows the agent capability of making complex decisions

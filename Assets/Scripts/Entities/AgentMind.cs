@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -15,6 +16,7 @@ public class AgentMind : MonoBehaviour
 	public float learningRate = 0.1f;
 	public float discountFactor = 0.9f; // value close to 1 encourages long-term rewards.
 	public float explorationRate = 0.2f; // For epsilon-greedy exploration
+	private float decisionMakingCoroutineInterval = 1f;
 
 	private void Start()
 	{
@@ -28,13 +30,36 @@ public class AgentMind : MonoBehaviour
 		AgentController agentController = GetComponent<AgentController>();
 		currentState = GetCurrentState(agentController);
 		currentAction = SelectAction(currentState);
+
+		StartCoroutine(DecisionMakingCoroutine());
 	}
 
+	private void Update()
+	{
+		// Execute the action
+		if (currentAction.CanExecute(currentState))
+		{
+			currentAction.Execute();
+		}
+	}
+
+	private IEnumerator DecisionMakingCoroutine()
+	{
+		AgentController agentController = GetComponent<AgentController>();
+		while (true)
+		{
+			// Decision-making logic
+			DecideAction(agentController);
+
+			// Wait for a fixed interval
+			yield return new WaitForSeconds(this.decisionMakingCoroutineInterval);
+		}
+	}
 
 	void OnDrawGizmos()
 	{
 		// Define the position above or next to the agent
-		Vector3 labelPosition = transform.position + Vector3.up * 1.5f;
+		Vector3 labelPosition = transform.position + Vector3.up * 0.5f;
 		Handles.Label(labelPosition, $"Action: {currentAction}");
 	}
 
@@ -116,6 +141,10 @@ public class AgentMind : MonoBehaviour
 			// Random action (exploration)
 			return executableActions[Random.Range(0, executableActions.Count)];
 		}
+		else if (state == null)		
+		{
+			return executableActions[0];
+		}
 		else
 		{
 			// Best action based on Q-values (exploitation)
@@ -142,6 +171,9 @@ public class AgentMind : MonoBehaviour
 		// FIXME: reward multipliers are arbitrary and given from o1
 		float reward = 0f;
 
+		if (previousState == null || newState == null)
+			return 0.1f;
+
 		// Positive reward for decreasing hunger
 		if (newState.hungerLevel < previousState.hungerLevel)
 			reward += (previousState.hungerLevel - newState.hungerLevel) * 10f;
@@ -154,7 +186,7 @@ public class AgentMind : MonoBehaviour
 		if (newState.energyLevel == EnergyLevel.Low)
 			reward -= 1f;
 
-		// Negative reward for being near a predator
+		// Negative reward for being near a predator FIXME: near!=seen
 		if (newState.detectedObjectsTypes.Contains(DetectedObjectType.Predator))
 			reward -= 5f;
 

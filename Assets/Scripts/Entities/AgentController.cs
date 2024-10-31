@@ -8,18 +8,13 @@ public class AgentController : MonoBehaviour
 {
 	public List<BaseSkill> skills = new List<BaseSkill>();
 	public GrassGenome genome; // genome - specific for grass agent
-	public float currentHealth;
-    public float currentEnergy; // 0 -> 100
+	public float currentHealth = 100; // 0 -> health
+	public float currentEnergy = 100; // 0 -> 100
 	public float currentHunger = 0f; // 0 -> 1
-
-	private AgentMind agentMind;
-	private float decisionMakingCoroutineInterval = 1f;
 
 	private void Start()
 	{
 		skills.AddRange(GetComponents<BaseSkill>());
-		agentMind = GetComponent<AgentMind>();
-		StartCoroutine(DecisionMakingCoroutine());
 	}
 
 	private void Update()
@@ -33,12 +28,6 @@ public class AgentController : MonoBehaviour
 		// Energy decreases and hunger increase.
 		currentHunger += genome.hungerIncreaseRate * Time.deltaTime;
 		currentEnergy -= genome.idleEnergyConsumption * Time.deltaTime;
-
-		// Execute the action
-		if (agentMind.currentAction.CanExecute(agentMind.currentState))
-		{
-			agentMind.currentAction.Execute();
-		}
 	}
 
 	public void Initialize(GrassGenome grassGenome)
@@ -47,29 +36,6 @@ public class AgentController : MonoBehaviour
 		genome = grassGenome;
 		currentHealth = this.genome.health;
 		currentEnergy = this.genome.energy;
-	}
-
-	private IEnumerator DecisionMakingCoroutine()
-	{
-		while (true)
-		{
-			// Decision-making logic
-			agentMind.DecideAction(this);
-
-			// Wait for a fixed interval
-			yield return new WaitForSeconds(this.decisionMakingCoroutineInterval);
-		}
-	}
-
-	private IEnumerator SleepRoutine()
-	{
-		// Implement sleeping behavior
-		// For simplicity, we'll just wait and regain energy
-		float sleepDuration = 5f; // Adjust as needed
-		yield return new WaitForSeconds(sleepDuration);
-
-		// Regain energy
-		currentEnergy = genome.energy; // Restore to max energy
 	}
 
 	public void AddSkill(BaseSkill skill)

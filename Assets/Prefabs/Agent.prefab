@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8872765095966578288}
   - component: {fileID: 8737329522695719181}
   - component: {fileID: 40110460900466762}
+  - component: {fileID: 6319715594845981353}
   m_Layer: 0
   m_Name: Agent
   m_TagString: Edible
@@ -165,3 +166,19 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &6319715594845981353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7397071287569498478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13a6f88d28aed444f8073483baebda1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentAction: {fileID: 0}
+  learningRate: 0.1
+  discountFactor: 0.9
+  explorationRate: 0.2
