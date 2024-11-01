@@ -68,7 +68,7 @@ public class AgentMind : MonoBehaviour
 		// Observe the current state
 		AgentState newState = GetCurrentState(agentController);
 		// Receive reward from the last action
-		reward = GetReward(currentState, newState);
+		reward = GetReward(currentState, newState); // FIXME
 		// Update Q-value
 		UpdateQValue(currentState, currentAction, reward, newState);
 		// Decide next action

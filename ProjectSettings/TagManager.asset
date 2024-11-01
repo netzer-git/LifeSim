@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - Edible
+  - Food
+  - Predator
   layers:
   - Default
   - TransparentFX
