@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FoodFeatures : MonoBehaviour
 {
-    public float health = 10f;
+    public float health = 30f;
 
 	public void Initialize(float health)
 	{
@@ -13,9 +13,6 @@ public class FoodFeatures : MonoBehaviour
 
 	private void Update()
 	{
-		if (health <= 0)
-		{
-			Destroy(gameObject);
-		}
+		
 	}
 }

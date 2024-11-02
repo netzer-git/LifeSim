@@ -19,7 +19,7 @@ public class EatAction : BaseAction
 	{
 		// Implement the logic for eating
 		// For example, reduce hunger and consume food
-		agentController.currentHunger = 0f;
+		agentController.currentSatiety = 0f;
 		// Assume food object is handled elsewhere
 	}
 }

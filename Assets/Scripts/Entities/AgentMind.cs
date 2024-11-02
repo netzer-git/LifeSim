@@ -87,12 +87,12 @@ public class AgentMind : MonoBehaviour
 	{
 		AgentState state = new AgentState();
 		// Discretize hunger level
-		if (agentController.currentHunger < 0.3f)
-			state.hungerLevel = HungerLevel.Low;
-		else if (agentController.currentHunger < 0.7f)
-			state.hungerLevel = HungerLevel.Medium;
+		if (agentController.currentSatiety > 70f)
+			state.satietyLevel = HungerLevel.High;
+		else if (agentController.currentSatiety > 30f)
+			state.satietyLevel = HungerLevel.Medium;
 		else
-			state.hungerLevel = HungerLevel.High;
+			state.satietyLevel = HungerLevel.Low;
 
 		// Discretize energy level
 		if (agentController.currentEnergy > 70f)
@@ -175,12 +175,12 @@ public class AgentMind : MonoBehaviour
 			return 0.1f;
 
 		// Positive reward for decreasing hunger
-		if (newState.hungerLevel < previousState.hungerLevel)
-			reward += (previousState.hungerLevel - newState.hungerLevel) * 10f;
+		if (newState.satietyLevel > previousState.satietyLevel)
+			reward += (previousState.satietyLevel - newState.satietyLevel) * 10f;
 
 		// Negative reward for increasing hunger
-		if (newState.hungerLevel > previousState.hungerLevel)
-			reward -= (newState.hungerLevel - previousState.hungerLevel) * 5f;
+		if (newState.satietyLevel < previousState.satietyLevel)
+			reward -= (newState.satietyLevel - previousState.satietyLevel) * 5f;
 
 		// Negative reward for low energy
 		if (newState.energyLevel == EnergyLevel.Low)

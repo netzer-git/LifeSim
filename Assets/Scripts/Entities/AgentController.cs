@@ -10,7 +10,7 @@ public class AgentController : MonoBehaviour
 	public GrassGenome genome; // genome - specific for grass agent
 	public float currentHealth = 100; // 0 -> health
 	public float currentEnergy = 100; // 0 -> 100
-	public float currentHunger = 0f; // 0 -> 1
+	public float currentSatiety = 100; // 0 -> 100
 
 	private void Start()
 	{
@@ -26,8 +26,14 @@ public class AgentController : MonoBehaviour
 		}
 
 		// Energy decreases and hunger increase.
-		currentHunger += genome.hungerIncreaseRate * Time.deltaTime;
+		currentSatiety -= genome.satietyDecreaseRate * Time.deltaTime;
 		currentEnergy -= genome.idleEnergyConsumption * Time.deltaTime;
+
+		if (currentSatiety <= 0)
+		{
+			currentSatiety = 0;
+			currentHealth -= genome.satietyDecreaseRate * Time.deltaTime;
+		}
 	}
 
 	public void Initialize(GrassGenome grassGenome)
@@ -35,7 +41,8 @@ public class AgentController : MonoBehaviour
 		// FIXME: make sure it's not copied (here it's after mutation)
 		genome = grassGenome;
 		currentHealth = this.genome.health;
-		currentEnergy = this.genome.energy;
+		currentEnergy = 100;
+		currentSatiety = 100;
 	}
 
 	public void AddSkill(BaseSkill skill)

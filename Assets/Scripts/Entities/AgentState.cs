@@ -29,7 +29,7 @@ public class AgentStateActionPair
 
 public class AgentState
 {
-	public HungerLevel hungerLevel;
+	public HungerLevel satietyLevel;
 	public EnergyLevel energyLevel;
 	public List<DetectedObjectType> detectedObjectsTypes;
 
@@ -39,7 +39,7 @@ public class AgentState
 			return false;
 
 		AgentState other = (AgentState)obj;
-		return hungerLevel == other.hungerLevel && energyLevel == other.energyLevel && SameObjects(detectedObjectsTypes, other.detectedObjectsTypes);
+		return satietyLevel == other.satietyLevel && energyLevel == other.energyLevel && SameObjects(detectedObjectsTypes, other.detectedObjectsTypes);
 	}
 
 	private bool SameObjects(List<DetectedObjectType> a, List<DetectedObjectType> b)
@@ -57,7 +57,7 @@ public class AgentState
 	public override int GetHashCode()
 	{
 		int hash = 13;
-		hash = hash * 7 + hungerLevel.GetHashCode();
+		hash = hash * 7 + satietyLevel.GetHashCode();
 		hash = hash * 7 + energyLevel.GetHashCode();
 		foreach (var obj in detectedObjectsTypes)
 		{
