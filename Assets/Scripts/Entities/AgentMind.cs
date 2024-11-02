@@ -16,7 +16,8 @@ public class AgentMind : MonoBehaviour
 	public float learningRate = 0.1f;
 	public float discountFactor = 0.9f; // value close to 1 encourages long-term rewards.
 	public float explorationRate = 0.2f; // For epsilon-greedy exploration
-	private float decisionMakingCoroutineInterval = 1f;
+	private float qTableInitValue = 0f;
+	private float decisionMakingCoroutineInterval = 5f;
 
 	private void Start()
 	{
@@ -28,7 +29,7 @@ public class AgentMind : MonoBehaviour
 		}
 
 		AgentController agentController = GetComponent<AgentController>();
-		currentState = GetCurrentState(agentController);
+		currentState = GetNewState(agentController);
 		currentAction = SelectAction(currentState);
 
 		StartCoroutine(DecisionMakingCoroutine());
@@ -66,33 +67,39 @@ public class AgentMind : MonoBehaviour
 	public void DecideAction(AgentController agentController)
 	{
 		// Observe the current state
-		AgentState newState = GetCurrentState(agentController);
+		AgentState newState = GetNewState(agentController);
 		// Receive reward from the last action
 		reward = GetReward(currentState, newState); // FIXME
 		// Update Q-value
 		UpdateQValue(currentState, currentAction, reward, newState);
 		// Decide next action
 		currentState = newState;
-		currentAction = SelectAction(currentState);
+		BaseAction nextAction = SelectAction(currentState);
 
 		// Execute the action
 		if (currentAction != null)
 		{
+			if (nextAction.ActionName != currentAction.ActionName)
+			{
+				currentAction.Finish();
+				currentAction = nextAction;
+			}
+
 			currentAction.Execute();
 		}
 	}
 
 
-	public AgentState GetCurrentState(AgentController agentController)
+	public AgentState GetNewState(AgentController agentController)
 	{
 		AgentState state = new AgentState();
 		// Discretize hunger level
 		if (agentController.currentSatiety > 70f)
-			state.satietyLevel = HungerLevel.High;
+			state.satietyLevel = SatietyLevel.High;
 		else if (agentController.currentSatiety > 30f)
-			state.satietyLevel = HungerLevel.Medium;
+			state.satietyLevel = SatietyLevel.Medium;
 		else
-			state.satietyLevel = HungerLevel.Low;
+			state.satietyLevel = SatietyLevel.Low;
 
 		// Discretize energy level
 		if (agentController.currentEnergy > 70f)
@@ -153,7 +160,7 @@ public class AgentMind : MonoBehaviour
 			foreach (var action in executableActions)
 			{
 				AgentStateActionPair key = new AgentStateActionPair { state = state, action = action };
-				float q = qTable.ContainsKey(key) ? qTable[key] : 0f;
+				float q = qTable.ContainsKey(key) ? qTable[key] : qTableInitValue;
 
 				if (q > maxQ)
 				{
@@ -174,25 +181,24 @@ public class AgentMind : MonoBehaviour
 		if (previousState == null || newState == null)
 			return 0.1f;
 
-		// Positive reward for decreasing hunger
+		// reward for decreasing hunger
 		if (newState.satietyLevel > previousState.satietyLevel)
-			reward += (previousState.satietyLevel - newState.satietyLevel) * 10f;
+			reward += (previousState.satietyLevel - newState.satietyLevel) * 2f;
+		else if (newState.satietyLevel < previousState.satietyLevel)
+			reward -= (newState.satietyLevel - previousState.satietyLevel) * 2;
 
-		// Negative reward for increasing hunger
-		if (newState.satietyLevel < previousState.satietyLevel)
-			reward -= (newState.satietyLevel - previousState.satietyLevel) * 5f;
+		// reward for increasing energy
+		if (newState.energyLevel > previousState.energyLevel)
+			reward += (previousState.energyLevel - newState.energyLevel) * 2f;
+		else if (newState.energyLevel < previousState.energyLevel)
+			reward -= (newState.energyLevel - previousState.energyLevel) * 2f;
 
-		// Negative reward for low energy
-		if (newState.energyLevel == EnergyLevel.Low)
-			reward -= 1f;
-
-		// Negative reward for being near a predator FIXME: near!=seen
+		// Negative reward for being near a predator
+		// FIXME: near!=seen
 		if (newState.detectedObjectsTypes.Contains(DetectedObjectType.Predator))
 			reward -= 5f;
-
-		// Positive reward for gaining energy (after sleeping)
-		if (newState.energyLevel > previousState.energyLevel)
-			reward += (newState.energyLevel - previousState.energyLevel) * 2f;
+		if (newState.detectedObjectsTypes.Contains(DetectedObjectType.Food))
+			reward += 2f;
 
 		return reward;
 	}
@@ -201,7 +207,7 @@ public class AgentMind : MonoBehaviour
 	{
 		AgentStateActionPair key = new AgentStateActionPair { state = state, action = action };
 		// Get the current Q-value
-		float currentQ = qTable.ContainsKey(key) ? qTable[key] : 0f;
+		float currentQ = qTable.ContainsKey(key) ? qTable[key] : qTableInitValue;
 		// Get the max Q-value for the new state
 		float maxQ = GetMaxQValue(newState);
 		// Update Q-value using the Q-learning formula
@@ -217,7 +223,7 @@ public class AgentMind : MonoBehaviour
 		foreach (BaseAction action in availableActions)
 		{
 			AgentStateActionPair key = new AgentStateActionPair { state = state, action = action };
-			float q = qTable.ContainsKey(key) ? qTable[key] : 0f;
+			float q = qTable.ContainsKey(key) ? qTable[key] : qTableInitValue;
 			if (q > maxQ)
 				maxQ = q;
 		}

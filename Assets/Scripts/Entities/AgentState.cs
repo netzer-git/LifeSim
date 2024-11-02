@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
-public enum HungerLevel { Low, Medium, High }
-public enum EnergyLevel { High, Medium, Low }
+public enum SatietyLevel { Low = 1, Medium = 2, High = 3 }
+public enum EnergyLevel { Low = 1, Medium = 2, High = 3 }
 public enum DetectedObjectType { Food, Predator, Mate, None }
 
 public class AgentStateActionPair
@@ -29,7 +29,7 @@ public class AgentStateActionPair
 
 public class AgentState
 {
-	public HungerLevel satietyLevel;
+	public SatietyLevel satietyLevel;
 	public EnergyLevel energyLevel;
 	public List<DetectedObjectType> detectedObjectsTypes;
 

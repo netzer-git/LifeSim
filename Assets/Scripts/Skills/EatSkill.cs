@@ -19,7 +19,7 @@ public class EatSkill : BaseSkill
 				throw new System.Exception("Energy is below 0 while eating");
 			}
 
-			// FIXME: make continues
+			// FIXME: make continues - test with food with high health
 			agentController.currentSatiety += agentController.genome.biteStrength;
 			agentController.currentEnergy -= agentController.genome.biteEnergyCost;
 

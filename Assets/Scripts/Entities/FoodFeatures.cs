@@ -10,9 +10,4 @@ public class FoodFeatures : MonoBehaviour
 	{
 		this.health = health;
 	}
-
-	private void Update()
-	{
-		
-	}
 }

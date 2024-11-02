@@ -66,6 +66,7 @@ public class AgentSpawner : MonoBehaviour
 		
 		// Add different actions
 		IdleAction idleAction = agentObject.AddComponent<IdleAction>();
+		SleepAction sleepAction = agentObject.AddComponent<SleepAction>();
 	}
 
 	private GrassGenome generateGenome()
