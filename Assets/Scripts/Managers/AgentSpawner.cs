@@ -42,6 +42,9 @@ public class AgentSpawner : MonoBehaviour
 		lookSkill.Initialize(agent, targetMask); // Set the view radius and target mask
 		agent.AddSkill(lookSkill);
 
+		EatSkill eatSkill = agentObject.AddComponent<EatSkill>();
+		agent.AddSkill(eatSkill);
+
 		// Add the RotateSkill component to the agentObject and initialize it
 		//RotationSkill rotateSkill = agentObject.AddComponent<RotationSkill>();
 		//rotateSkill.Initialize(50f); 
