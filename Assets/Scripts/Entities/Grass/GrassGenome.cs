@@ -6,7 +6,8 @@ public struct GrassGenome
 	public float health; // start and max amount of health, replenish on long rests
 	public float idleEnergyConsumption; // energy consumed when idle
 	public float sleepEnergyGain; // energy gained when sleeping
-	// eat
+	public float sleepHealthGain; // energy gained when sleeping
+								  // eat
 	public float biteStrength; // amount of food for each bite
 	public float biteEnergyCost; // energy cost for each bite
 	public float stomachSize; // amount of maximum food in the stomach
